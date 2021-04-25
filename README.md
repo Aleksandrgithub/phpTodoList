@@ -62,7 +62,6 @@ INSERT INTO `todo` (`description`) VALUES
 ## Дополнительные задачи
 
 ### Метод readCompleted
-### delete
 ```sh
 Пример запроса: .../phpTodoList/todo/readCompleted.php
 ```
