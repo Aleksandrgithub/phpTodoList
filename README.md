@@ -33,5 +33,5 @@ INSERT INTO `todo` (`description`) VALUES
 
 ### create
 ```sh
-Пример запроса: " .../phpTodoList/todo/create.php?task=Новая задача "
+Пример запроса: .../phpTodoList/todo/create.php?task=Новая задача
 ```
