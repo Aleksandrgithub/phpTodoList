@@ -8,5 +8,5 @@ CREATE TABLE IF NOT EXISTS `todo` (
     `description` text NOT NULL,
     `status` boolean NOT NULL DEFAULT 1,
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
