@@ -26,6 +26,6 @@ if (isset($_GET['task'])) {
 	}
 } else {
 	http_response_code(400);
-	echo json_encode(array("message" => "Невозможно создать задачу. Ошибка в запросе. Пример правильного запроса: http://localhost/phpTodoList/todo/create.php?task=Исправить ошибки в пулреквесте"), JSON_UNESCAPED_UNICODE);
+	echo json_encode(array("message" => "Невозможно создать задачу. Ошибка в запросе."), JSON_UNESCAPED_UNICODE);
 }
 ?>

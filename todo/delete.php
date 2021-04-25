@@ -21,6 +21,6 @@ if (isset($_GET['id'])) {
 	}
 } else {
 	http_response_code(400);
-	echo json_encode(array("message" => "Невозможно удалить задачу. Ошибка в запросе. Пример правильного запроса: http://localhost/phpTodoList/todo/delete.php?id=1"), JSON_UNESCAPED_UNICODE);
+	echo json_encode(array("message" => "Невозможно удалить задачу. Ошибка в запросе."), JSON_UNESCAPED_UNICODE);
 }
 ?>

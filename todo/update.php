@@ -23,6 +23,6 @@ if((isset($_GET['status'])) && isset($_GET['id'])) {
 	}
 } else {
 	http_response_code(400);
-	echo json_encode(array("message" => "Невозможно обновить задачу. Ошибка в запросе. Пример правильного запроса: http://localhost/phpTodoList/todo/update.php?id=1&status=0"), JSON_UNESCAPED_UNICODE);
+	echo json_encode(array("message" => "Невозможно обновить задачу. Ошибка в запросе."), JSON_UNESCAPED_UNICODE);
 }
 
