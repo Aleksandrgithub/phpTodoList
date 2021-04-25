@@ -29,9 +29,39 @@ INSERT INTO `todo` (`description`) VALUES
 ```
 
 
-## Methods
+## Методы
 
 ### create
 ```sh
 Пример запроса: .../phpTodoList/todo/create.php?task=Новая задача
+```
+
+### read
+```sh
+Пример запроса: .../phpTodoList/todo/read.php
+```
+
+### update
+```sh
+Пример запроса: .../phpTodoList/todo/update.php?id=1&status=0
+```
+
+### delete
+```sh
+Пример запроса: .../phpTodoList/todo/delete.php?id=1
+```
+
+### readPaging
+```sh
+Пример запроса: .../phpTodoList/todo/readPaging.php
+Посетить другую страницу: .../phpTodoList/todo/readPaging.php?page=2
+Установить кол-во записей на странице: .../phpTodoList/todo/readPaging.php?records=2
+```
+
+## Дополнительные задачи
+
+### Метод readCompleted
+### delete
+```sh
+Пример запроса: .../phpTodoList/todo/readCompleted.php
 ```
