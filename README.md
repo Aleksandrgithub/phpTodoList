@@ -56,6 +56,7 @@ INSERT INTO `todo` (`description`) VALUES
 Пример запроса: .../phpTodoList/todo/readPaging.php
 Посетить другую страницу: .../phpTodoList/todo/readPaging.php?page=2
 Установить кол-во записей на странице: .../phpTodoList/todo/readPaging.php?records=2
+Если кол-во записей не указано, дефолтное значение 5
 ```
 
 ## Дополнительные задачи
