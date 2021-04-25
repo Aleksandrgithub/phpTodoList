@@ -3,7 +3,7 @@
 ## Запрос на создание таблицы в phpMyAdmin
 
 ```sh
-CREATE TABLE IF NOT EXISTS `todoTest` (
+CREATE TABLE IF NOT EXISTS `todo` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `description` text NOT NULL,
     `status` boolean NOT NULL DEFAULT 1,
