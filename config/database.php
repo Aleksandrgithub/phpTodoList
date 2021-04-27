@@ -5,7 +5,7 @@ class Database {
 	private $dbName = "test_task";
 	private $username = "root";
 	private $password = "";
-	public $conn;
+	private $conn;
 
 	public function getConnection(){
 		$this->conn = null;
