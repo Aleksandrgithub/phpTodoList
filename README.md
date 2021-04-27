@@ -33,7 +33,7 @@ INSERT INTO `todo` (`description`) VALUES
 
 ### create
 ```sh
-Пример запроса: .../phpTodoList/todo/create.php?task=Новая задача
+Пример запроса: curl -i -X POST -H "Content-Type: application/json" -d "{\"description\":\"newTask\"}" http://localhost/phpTodoList/task/create.php
 ```
 
 ### read
@@ -43,12 +43,12 @@ INSERT INTO `todo` (`description`) VALUES
 
 ### update
 ```sh
-Пример запроса: .../phpTodoList/todo/update.php?id=1&status=0
+Пример запроса: curl -i -X POST -H "Content-Type: application/json" -d "{\"id\":\"1\", \"status\":\"0\"}" http://localhost/phpTodoList/task/update.php
 ```
 
 ### delete
 ```sh
-Пример запроса: .../phpTodoList/todo/delete.php?id=1
+Пример запроса: curl -i -X POST -H "Content-Type: application/json" -d "{\"id\":\"1\"}" http://localhost/phpTodoList/task/delete.php
 ```
 
 ### readPaging
