@@ -1,75 +1,73 @@
 <?php
-class Task {
+include_once 'database.php';
 
-	private $conn;
+class DbTransactions
+{
 	private $tableName = "todo";
-	private $id;
-	private $description;
-	private $status;
+	private $conn;
 
-	public function __construct($db){
-		$this->conn = $db;
+	public function __construct(){
+		$database = new Database();
+		$this->conn = $database->getConnection();
 	}
 
-	public function setId($id)
+	public function read()
 	{
-		$this->id = $id;
-	}
-
-	public function setDescription($description)
-	{
-		$this->description = $description;
-	}
-
-	public function setStatus($status)
-	{
-		$this->status = $status;
-	}
-
-	public function read(){
 		$query = "SELECT id, description FROM " . $this->tableName . " WHERE status = 1";
 		$stmt = $this->conn->prepare($query);
 		$stmt->execute();
 		return $stmt;
 	}
 
-	public function readCompleted(){
+	public function readCompleted()
+	{
 		$query = "SELECT id, description FROM " . $this->tableName . " WHERE status = 0";
 		$stmt = $this->conn->prepare($query);
 		$stmt->execute();
 		return $stmt;
 	}
 
-	public function create(){
+	public function create($description)
+	{
 		$query = "INSERT INTO " . $this->tableName . " SET description=:description";
 		$stmt = $this->conn->prepare($query);
-		$stmt->bindParam(":description", $this->description);
-		if ($stmt->execute()) {
-			$insertId = $this->conn->lastInsertId();
-			return $insertId;
-		}
-		return false;
-	}
-
-	public function update(){
-		$query = "UPDATE " . $this->tableName . " SET status = :status WHERE id = :id";
-		$stmt = $this->conn->prepare($query);
-		$stmt->bindParam(':status', $this->status);
-		$stmt->bindParam(':id', $this->id);
+		$stmt->bindParam(':description', $description);
 		if ($stmt->execute()) {
 			return true;
 		}
 		return false;
 	}
 
-	public function markTaskCompleted(){
+	public function getLastInsertId()
+	{
+		if($this->conn->lastInsertId()) {
+			$insertId = $this->conn->lastInsertId();
+			return $insertId;
+		}
+		return false;
+	}
+
+	public function update($status, $id)
+	{
+		$query = "UPDATE " . $this->tableName . " SET status = :status WHERE id = :id";
+		$stmt = $this->conn->prepare($query);
+		$stmt->bindParam(':status', $status);
+		$stmt->bindParam(':id', $id);
+		if ($stmt->execute()) {
+			return true;
+		}
+		return false;
+	}
+
+	public function markTaskCompleted($status, $id)
+	{
 		$query = "SELECT status FROM " . $this->tableName . " WHERE id = :id";
 		$stmt = $this->conn->prepare($query);
-		$stmt->bindParam(':id', $this->id);
+		$stmt->bindParam(':id', $id);
 		if ($stmt->execute()) {
 			$result = $stmt->fetch(PDO::FETCH_ASSOC);
-			if((!empty($result)) && ($result['status'] != 0)) {
-				Todo::update();
+			if ((!empty($result)) && ($result['status'] != 0)) {
+				DbTransactions::update($status, $id);
 				return true;
 			}
 			return false;
@@ -77,19 +75,21 @@ class Task {
 		return false;
 	}
 
-	public function delete(){
+	public function delete($id)
+	{
 		$query = "DELETE FROM " . $this->tableName . " WHERE id = :id";
 		$stmt = $this->conn->prepare($query);
-		$stmt->bindParam(":id", $this->id);
+		$stmt->bindParam(":id", $id);
 		if ($stmt->execute()) {
 			return true;
 		}
 		return false;
 	}
 
-	public function readPaging($fromRecordNum, $recordsPerPage){
+	public function readPaging($fromRecordNum, $recordsPerPage)
+	{
 		$query = "SELECT id, description FROM " . $this->tableName . " WHERE status = 1 LIMIT :fromRecordNum, :recordsPerPage";
-		$stmt = $this->conn->prepare( $query );
+		$stmt = $this->conn->prepare($query);
 		$stmt->bindParam(":fromRecordNum", $fromRecordNum, PDO::PARAM_INT);
 		$stmt->bindParam(":recordsPerPage", $recordsPerPage, PDO::PARAM_INT);
 		$stmt->execute();

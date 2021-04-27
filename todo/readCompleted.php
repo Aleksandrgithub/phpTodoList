@@ -1,16 +1,13 @@
 <?php
 header("Content-Type: application/json; charset=UTF-8");
 
-include_once '../config/database.php';
-include_once '../objects/todo.php';
-include_once  '../config/responseStatus.php';
+include_once '../config/dbTransactions.php';
+include_once '../objects/task.php';
+include_once '../config/responseStatus.php';
 
-$database = new Database();
-$db = $database->getConnection();
+$database = new DbTransactions();
 
-$task = new Task($db);
-
-$stmt = $task->readCompleted();
+$stmt = $database->readCompleted();
 $rowCount = $stmt->rowCount();
 
 if ($rowCount > 0) {
@@ -27,5 +24,5 @@ if ($rowCount > 0) {
 	echo json_encode($todosArr, JSON_UNESCAPED_UNICODE);
 } else {
 	http_response_code(ResponseStatus::HTTP_NOT_FOUND);
-	echo json_encode(array("message" => "Список сделанных задач пуст"), JSON_UNESCAPED_UNICODE);
+	echo json_encode(array("message" => "The list of completed tasks is empty"), JSON_UNESCAPED_UNICODE);
 }
