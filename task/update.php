@@ -7,12 +7,12 @@ include_once '../config/dbTransactions.php';
 include_once '../objects/task.php';
 include_once  '../config/responseStatus.php';
 
+use Todo\Task as Task;
+use Transactions\DbTransactions as DbTransactions;
+
 const TASK_STATUS = 0;
-
 $database = new DbTransactions();
-
 $task = new Task();
-
 $data = json_decode(file_get_contents("php://input"));
 
 if(isset($data->id) && isset($data->status)) {

@@ -2,13 +2,11 @@
 header("Content-Type: application/json; charset=UTF-8");
 
 include_once '../config/dbTransactions.php';
-include_once '../objects/task.php';
 include_once '../config/responseStatus.php';
 
+use Transactions\DbTransactions as DbTransactions;
+
 $database = new DbTransactions();
-
-$task = new Task();
-
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
 
 if (!empty($_GET['records'])) {
@@ -25,10 +23,9 @@ $rowCount = $stmt->rowCount();
 if ($rowCount > 0) {
 	$todosArr = array();
 	while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-		extract($row);
 		$todoItem = array(
-			"id" => $id,
-			"description" => html_entity_decode($description),
+			"id" => $row['id'],
+			"description" => html_entity_decode($row['description']),
 		);
 		array_push($todosArr, $todoItem);
 	}

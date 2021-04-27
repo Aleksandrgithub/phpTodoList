@@ -5,16 +5,17 @@ include_once '../config/dbTransactions.php';
 include_once '../objects/task.php';
 include_once  '../config/responseStatus.php';
 
+use Todo\Task as Task;
+use Transactions\DbTransactions as DbTransactions;
+
 $database = new DbTransactions();
-
 $task = new Task();
-
 $data = json_decode(file_get_contents("php://input"));
 
 if (isset($data->id)) {
 	$id = $data->id;
 	$task->setId($id);
-	if ($database->delete($task->getId($id))) {
+	if ($database->delete($task->getId())) {
 		http_response_code(ResponseStatus::HTTP_OK);
 		echo json_encode(array("message" => "The task has been deleted."), JSON_UNESCAPED_UNICODE);
 	} else {

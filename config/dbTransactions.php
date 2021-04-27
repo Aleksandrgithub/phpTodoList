@@ -1,6 +1,8 @@
 <?php
+namespace Transactions;
 include_once 'database.php';
-
+use Connection\Database;
+use PDO;
 class DbTransactions
 {
 	private $tableName = "todo";
