@@ -1,12 +1,13 @@
 <?php
 header("Content-Type: application/json; charset=UTF-8");
 
-include_once '../config/dbTransactions.php';
-include_once '../config/responseStatus.php';
+include '../config/database.php';
+include '../config/response.php';
 
-use Transactions\DbTransactions as DbTransactions;
+use Database\Transaction as Transaction;
+use Response\Status as Status;
 
-$database = new DbTransactions();
+$transaction = new Transaction();
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
 
 if (!empty($_GET['records'])) {
@@ -17,7 +18,7 @@ if (!empty($_GET['records'])) {
 
 $fromRecordNum = ($recordsPerPage * $page) - $recordsPerPage;
 
-$stmt = $database->readPaging($fromRecordNum, $recordsPerPage);
+$stmt = $transaction->readPaging($fromRecordNum, $recordsPerPage);
 $rowCount = $stmt->rowCount();
 
 if ($rowCount > 0) {
@@ -29,9 +30,9 @@ if ($rowCount > 0) {
 		);
 		array_push($todosArr, $todoItem);
 	}
-	http_response_code(ResponseStatus::HTTP_OK);
+	http_response_code(Status::HTTP_OK);
 	echo json_encode($todosArr, JSON_UNESCAPED_UNICODE);
 } else {
-	http_response_code(ResponseStatus::HTTP_NOT_FOUND);
+	http_response_code(Status::HTTP_NOT_FOUND);
 	echo json_encode(array("message" => "No tasks found."), JSON_UNESCAPED_UNICODE);
 }

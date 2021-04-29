@@ -1,13 +1,14 @@
 <?php
 header("Content-Type: application/json; charset=UTF-8");
 
-include_once '../config/dbTransactions.php';
-include_once '../config/responseStatus.php';
+include '../config/database.php';
+include '../config/response.php';
 
-use Transactions\DbTransactions as DbTransactions;
+use Database\Transaction as Transaction;
+use Response\Status as Status;
 
-$database = new DbTransactions();
-$stmt = $database->readCompleted();
+$transaction = new Transaction();
+$stmt = $transaction->readCompleted();
 $rowCount = $stmt->rowCount();
 
 if ($rowCount > 0) {
@@ -19,9 +20,9 @@ if ($rowCount > 0) {
 		);
 		array_push($todosArr, $todoItem);
 	}
-	http_response_code(ResponseStatus::HTTP_OK);
+	http_response_code(Status::HTTP_OK);
 	echo json_encode($todosArr, JSON_UNESCAPED_UNICODE);
 } else {
-	http_response_code(ResponseStatus::HTTP_NOT_FOUND);
+	http_response_code(Status::HTTP_NOT_FOUND);
 	echo json_encode(array("message" => "The list of completed tasks is empty"), JSON_UNESCAPED_UNICODE);
 }
