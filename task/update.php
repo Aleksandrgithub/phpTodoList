@@ -35,6 +35,6 @@ if(isset($data->id) && isset($data->status)) {
 	}
 } else {
 	http_response_code(Status::HTTP_BAD_REQUEST);
-	echo json_encode(array("message" => "Unable to update task. Error in the request, indicate the number of the task to be deleted in the request"), JSON_UNESCAPED_UNICODE);
+	echo json_encode(array("message" => "Unable to update task. Error in the request, indicate the number of the task to be updated in the request"), JSON_UNESCAPED_UNICODE);
 }
 
