@@ -15,17 +15,17 @@ CREATE TABLE IF NOT EXISTS `todo` (
 ### Тестовые данные
 ```sh
 INSERT INTO `todo` (`description`) VALUES
-    ('Выполнить работу по дому'),
-    ('Прочитать книгу'),
-    ('Выполнить лабораторные работы'),
-    ('Посмотреть видео'),
-    ('Погулять'),
-    ('Исправить ошибки в пулреквесте'),
-    ('Ответить на письма'),
-    ('Погулять с собакой'),
-    ('Помыть собаку'),
-    ('Помочь друзьям'),
-    ('Выспаться')
+    ('Do housework'),
+    ('Read a book'),
+    ('Perform laboratory work'),
+    ('Watch the video'),
+    ('Take a walk'),
+    ('Fix errors in pull request'),
+    ('Reply to emails'),
+    ('Take a walk with the dog'),
+    ('Wash the dog'),
+    ('Help friends'),
+    ('Get some sleep')
 ```
 
 
