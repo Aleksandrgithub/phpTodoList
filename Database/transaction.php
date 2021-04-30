@@ -1,27 +1,11 @@
 <?php
 namespace Database;
 
+include '../Database/connection.php';
+
+use Database\Connection as Connection;
+use Model\Task\Task as Task;
 use PDO;
-use PDOException;
-
-class Connection
-{
-	private $host = "localhost";
-	private $dbName = "test_task";
-	private $username = "root";
-	private $password = "";
-	private $conn;
-
-	public function getConnection(){
-		$this->conn = null;
-		try {
-			$this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->dbName, $this->username, $this->password);
-		} catch(PDOException $exception){
-			echo "Connection error: " . $exception->getMessage();
-		}
-		return $this->conn;
-	}
-}
 
 class Transaction
 {
@@ -33,12 +17,35 @@ class Transaction
 		$this->conn = $database->getConnection();
 	}
 
-	public function read()
+	public function readAll()
 	{
 		$query = "SELECT id, description FROM " . $this->tableName . " WHERE status = 1";
 		$stmt = $this->conn->prepare($query);
 		$stmt->execute();
-		return $stmt;
+		$todo = array();
+		while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+			$task = Transaction::read($row['id']);
+			array_push($todo, $task->getTask());
+		}
+		return $todo;
+	}
+
+	public function read($id): Task
+	{
+		$query = "SELECT id, description, status FROM " . $this->tableName . " WHERE id = :id";
+		$stmt = $this->conn->prepare($query);
+		$stmt->bindParam(':id', $id);
+		$stmt->execute();
+		$row = $stmt->fetch(PDO::FETCH_ASSOC);
+		$task = new Task($row['id'], $row['description'], $row['status']);
+		return $task;
+	}
+
+
+	public function getRowCount($stmt)
+	{
+		$rowCount = $stmt->rowCount();
+		return $rowCount;
 	}
 
 	public function readCompleted()
@@ -46,13 +53,19 @@ class Transaction
 		$query = "SELECT id, description FROM " . $this->tableName . " WHERE status = 0";
 		$stmt = $this->conn->prepare($query);
 		$stmt->execute();
-		return $stmt;
+		$todo = array();
+		while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+			$task = Transaction::read($row['id']);
+			array_push($todo, $task->getTask());
+		}
+		return $todo;
 	}
 
-	public function create($description)
+	public function create($task)
 	{
 		$query = "INSERT INTO " . $this->tableName . " SET description=:description";
 		$stmt = $this->conn->prepare($query);
+		$description = $task->getDescription();
 		$stmt->bindParam(':description', $description);
 		if ($stmt->execute()) {
 			return true;
@@ -69,10 +82,12 @@ class Transaction
 		return false;
 	}
 
-	public function update($status, $id)
+	public function update($task)
 	{
 		$query = "UPDATE " . $this->tableName . " SET status = :status WHERE id = :id";
 		$stmt = $this->conn->prepare($query);
+		$status = $task->getStatus();
+		$id = $task->getId();
 		$stmt->bindParam(':status', $status);
 		$stmt->bindParam(':id', $id);
 		if ($stmt->execute()) {
@@ -81,7 +96,7 @@ class Transaction
 		return false;
 	}
 
-	public function markTaskCompleted($status, $id)
+	public function checkTaskStatus($id)
 	{
 		$query = "SELECT status FROM " . $this->tableName . " WHERE id = :id";
 		$stmt = $this->conn->prepare($query);
@@ -89,10 +104,21 @@ class Transaction
 		if ($stmt->execute()) {
 			$result = $stmt->fetch(PDO::FETCH_ASSOC);
 			if ((!empty($result)) && ($result['status'] != 0)) {
-				DbTransactions::update($status, $id);
 				return true;
 			}
 			return false;
+		}
+		return false;
+	}
+
+	public function checkTaskExist($id) {
+		$query = "SELECT EXISTS(SELECT 1 FROM " . $this->tableName . " WHERE id =:id LIMIT 1)";
+		$stmt = $this->conn->prepare($query);
+		$stmt->bindValue(':id', $id, PDO::PARAM_INT);
+		$stmt->execute();
+		$result = $stmt->fetch(PDO::FETCH_NUM);
+		if (intval($result[0]) != 0) {
+			return true;
 		}
 		return false;
 	}
@@ -115,6 +141,11 @@ class Transaction
 		$stmt->bindParam(":fromRecordNum", $fromRecordNum, PDO::PARAM_INT);
 		$stmt->bindParam(":recordsPerPage", $recordsPerPage, PDO::PARAM_INT);
 		$stmt->execute();
-		return $stmt;
+		$todo = array();
+		while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+			$task = Transaction::read($row['id']);
+			array_push($todo, $task->getTask());
+		}
+		return $todo;
 	}
 }
