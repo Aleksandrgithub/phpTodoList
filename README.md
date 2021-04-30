@@ -38,24 +38,29 @@ INSERT INTO `todo` (`description`) VALUES
 
 ### read
 ```sh
-Пример запроса: .../phpTodoList/todo/read.php
+Пример запроса: curl -i -X POST -H "Content-Type: application/json" -d "{\"id\":\"1\"}" http://localhost/phpTodoList/Todo/read.php
+```
+
+### readAll
+```sh
+Пример запроса: .../phpTodoList/Todo/readAll.php
 ```
 
 ### update
 ```sh
-Пример запроса: curl -i -X POST -H "Content-Type: application/json" -d "{\"id\":\"1\", \"status\":\"0\"}" http://localhost/phpTodoList/task/update.php
+Пример запроса: curl -i -X POST -H "Content-Type: application/json" -d "{\"id\":\"1\", \"status\":\"0\"}" http://localhost/phpTodoList/Todo/update.php
 ```
 
 ### delete
 ```sh
-Пример запроса: curl -i -X POST -H "Content-Type: application/json" -d "{\"id\":\"1\"}" http://localhost/phpTodoList/task/delete.php
+Пример запроса: curl -i -X POST -H "Content-Type: application/json" -d "{\"id\":\"1\"}" http://localhost/phpTodoList/Todo/delete.php
 ```
 
 ### readPaging
 ```sh
-Пример запроса: .../phpTodoList/todo/readPaging.php
-Посетить другую страницу: .../phpTodoList/todo/readPaging.php?page=2
-Установить кол-во записей на странице: .../phpTodoList/todo/readPaging.php?records=2
+Пример запроса: .../phpTodoList/Todo/readPaging.php
+Посетить другую страницу: .../phpTodoList/Todo/readPaging.php?page=2
+Установить кол-во записей на странице: .../phpTodoList/Todo/readPaging.php?records=2
 Если кол-во записей не указано, дефолтное значение 5
 ```
 
@@ -63,5 +68,5 @@ INSERT INTO `todo` (`description`) VALUES
 
 ### Метод readCompleted
 ```sh
-Пример запроса: .../phpTodoList/todo/readCompleted.php
+Пример запроса: .../phpTodoList/Todo/readCompleted.php
 ```
