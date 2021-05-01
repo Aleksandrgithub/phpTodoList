@@ -24,13 +24,13 @@ class Transaction
 		$stmt->execute();
 		$todo = array();
 		while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-			$task = Transaction::read($row['id']);
+			$task = self::read($row['id']);
 			array_push($todo, $task->getTask());
 		}
 		return $todo;
 	}
 
-	public function read($id)
+	public function read($id): ?Task
 	{
 		$query = "SELECT id, description, status FROM " . $this->tableName . " WHERE id = :id";
 		$stmt = $this->conn->prepare($query);
@@ -41,7 +41,7 @@ class Transaction
 			$task = new Task($row['id'], $row['description'], $row['status']);
 			return $task;
 		} else {
-			return false;
+			return null;
 		}
 	}
 

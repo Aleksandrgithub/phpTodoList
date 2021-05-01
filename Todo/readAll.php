@@ -19,4 +19,3 @@ if ($todo > 0) {
 	http_response_code(Status::HTTP_NOT_FOUND);
 	echo json_encode(array("message" => "The task list is empty"), JSON_UNESCAPED_UNICODE);
 }
-

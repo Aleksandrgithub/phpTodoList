@@ -15,7 +15,7 @@ $data = json_decode(file_get_contents("php://input"));
 if (isset($data->id)) {
 	$id = $data->id;
 	$task = $transaction->read($id);
-	if ($task) {
+	if (isset($task)) {
 		http_response_code(ResponseStatus::HTTP_OK);
 		echo json_encode($task->getTask(), JSON_UNESCAPED_UNICODE);
 	} else {

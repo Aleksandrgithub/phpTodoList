@@ -20,7 +20,7 @@ if(isset($data->id) && isset($data->status)) {
 	$status = $data->status;
 	if($status == TaskStatus::COMPLETED) {
 		$task = $transaction->read($id);
-		if($task) {
+		if(isset($task)) {
 			if($task->getStatus() == 1) {
 				if ($transaction->update($task)) {
 					http_response_code(ResponseStatus::HTTP_OK);
