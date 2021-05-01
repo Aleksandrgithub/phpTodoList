@@ -33,7 +33,7 @@ INSERT INTO `todo` (`description`) VALUES
 
 ### create
 ```sh
-Пример запроса: curl -i -X POST -H "Content-Type: application/json" -d "{\"description\":\"newTask\"}" http://localhost/phpTodoList/task/create.php
+Пример запроса: curl -i -X POST -H "Content-Type: application/json" -d "{\"description\":\"newTask\"}" http://localhost/phpTodoList/Todo/create.php
 ```
 
 ### read
