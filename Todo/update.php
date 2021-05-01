@@ -13,17 +13,15 @@ use Model\Task\Status as TaskStatus;
 use Database\Transaction as Transaction;
 
 $transaction = new Transaction();
-$task = new Task();
 $data = json_decode(file_get_contents("php://input"));
 
 if(isset($data->id) && isset($data->status)) {
 	$id = $data->id;
 	$status = $data->status;
 	if($status == TaskStatus::COMPLETED) {
-		$task->setId($id);
-		$task->setStatusCompleted($status);
-		if($transaction->checkTaskExist($id)) {
-			if($transaction->checkTaskStatus($id)) {
+		$task = $transaction->read($id);
+		if($task) {
+			if($task->getStatus() == 1) {
 				if ($transaction->update($task)) {
 					http_response_code(ResponseStatus::HTTP_OK);
 					echo json_encode(array("message" => "Task has been updated."), JSON_UNESCAPED_UNICODE);

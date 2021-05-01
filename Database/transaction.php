@@ -19,7 +19,7 @@ class Transaction
 
 	public function readAll()
 	{
-		$query = "SELECT id, description FROM " . $this->tableName . " WHERE status = 1";
+		$query = "SELECT id FROM " . $this->tableName . " WHERE status = 1";
 		$stmt = $this->conn->prepare($query);
 		$stmt->execute();
 		$todo = array();
@@ -30,22 +30,19 @@ class Transaction
 		return $todo;
 	}
 
-	public function read($id): Task
+	public function read($id)
 	{
 		$query = "SELECT id, description, status FROM " . $this->tableName . " WHERE id = :id";
 		$stmt = $this->conn->prepare($query);
 		$stmt->bindParam(':id', $id);
 		$stmt->execute();
-		$row = $stmt->fetch(PDO::FETCH_ASSOC);
-		$task = new Task($row['id'], $row['description'], $row['status']);
-		return $task;
-	}
-
-
-	public function getRowCount($stmt)
-	{
-		$rowCount = $stmt->rowCount();
-		return $rowCount;
+		if($stmt->rowCount() > 0) {
+			$row = $stmt->fetch(PDO::FETCH_ASSOC);
+			$task = new Task($row['id'], $row['description'], $row['status']);
+			return $task;
+		} else {
+			return false;
+		}
 	}
 
 	public function readCompleted()
@@ -91,33 +88,6 @@ class Transaction
 		$stmt->bindParam(':status', $status);
 		$stmt->bindParam(':id', $id);
 		if ($stmt->execute()) {
-			return true;
-		}
-		return false;
-	}
-
-	public function checkTaskStatus($id)
-	{
-		$query = "SELECT status FROM " . $this->tableName . " WHERE id = :id";
-		$stmt = $this->conn->prepare($query);
-		$stmt->bindParam(':id', $id);
-		if ($stmt->execute()) {
-			$result = $stmt->fetch(PDO::FETCH_ASSOC);
-			if ((!empty($result)) && ($result['status'] != 0)) {
-				return true;
-			}
-			return false;
-		}
-		return false;
-	}
-
-	public function checkTaskExist($id) {
-		$query = "SELECT EXISTS(SELECT 1 FROM " . $this->tableName . " WHERE id =:id LIMIT 1)";
-		$stmt = $this->conn->prepare($query);
-		$stmt->bindValue(':id', $id, PDO::PARAM_INT);
-		$stmt->execute();
-		$result = $stmt->fetch(PDO::FETCH_NUM);
-		if (intval($result[0]) != 0) {
 			return true;
 		}
 		return false;

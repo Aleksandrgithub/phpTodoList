@@ -9,7 +9,7 @@ include '../Transport/response.php';
 
 use Model\Task\Task as Task;
 use Database\Transaction as Transaction;
-use Transport\Response\Status as Status;
+use Transport\Response\Status as ResponseStatus;
 
 $transaction = new Transaction();
 $task = new Task();
@@ -21,18 +21,18 @@ if (isset($data->description)) {
 		$task->setDescription($description);
 		if($transaction->create($task)){
 			$taskId = $transaction->getLastInsertId();
-			http_response_code(Status::HTTP_CREATED);
+			http_response_code(ResponseStatus::HTTP_CREATED);
 			echo json_encode(array("message" => "The task has been created. Task number: $taskId"), JSON_UNESCAPED_UNICODE);
 		} else {
-			http_response_code(Status::HTTP_INTERNAL_SERVER_ERROR);
+			http_response_code(ResponseStatus::HTTP_INTERNAL_SERVER_ERROR);
 			echo json_encode(array("message" => "Unable to create task."), JSON_UNESCAPED_UNICODE);
 		}
 	} else {
-		http_response_code(Status::HTTP_BAD_REQUEST);
+		http_response_code(ResponseStatus::HTTP_BAD_REQUEST);
 		exit("It is impossible to create a task with a description of more than 1000 characters");
 	}
 } else {
-	http_response_code(Status::HTTP_BAD_REQUEST);
+	http_response_code(ResponseStatus::HTTP_BAD_REQUEST);
 	echo json_encode(array("message" => "Unable to create task. Error in request, indicate the description of the task to be created in the request"), JSON_UNESCAPED_UNICODE);
 }
 ?>
